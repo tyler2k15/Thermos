@@ -57,11 +57,22 @@ public class CauldronConfig extends ConfigBase
     public final BoolSetting fakePlayerLogin = new BoolSetting(this, "fake-players.do-login", false, "Raise login events for fake players");
     public final IntSetting maxPlayersVisible = new IntSetting(this, "world-settings.max-players-visible", -1, "How many players will visible in the tab list");
 
+    // Thermos caterings
+    public final BoolSetting realNames = new BoolSetting(this, "world-settings.use-real-names", false, "Instead of DIM##, use the world name prescribed by the mod! Be careful with this one, could create incompat with existing setups!");
+
     // Optimization options
     public final IntSetting repeaterL = new IntSetting(this, "optimized.redstone-repeater-update-speed", -1, "how many milliseconds the server must ignore before trying repeater updates");
     public final IntSetting redstoneTorchL = new IntSetting(this, "optimized.redstone-redstoneTorch-update-speed", -1, "how many milliseconds the server must ignore before trying redstoneTorch updates");
-
+    public final BoolSetting affinity = new BoolSetting(this, "optimized.affinity-locking", false, "Whether to enable affinity locking. Very technical usage, recommended for dedicated hosts only. Ask on Discord or GitHub for info on how to set this up properly.");
+    public final BoolSetting ramChunks = new BoolSetting(this, "optimized.ram-load-chunks", false, "Loads chunks into the system RAM (experimental). WARNING! ENABLING THIS WILL INCREASE RAM USAGE BY OVER 1GB.");
+    
+    // World Protection options
+    public final BoolSetting protectSP = new BoolSetting(this, "protection.spawn-protect", true, "Whether to enable Thermos' all-seeing protection in the spawn world");
+    public final IntArraySetting instantRemove = new IntArraySetting(this, "protection.instant-removal", new Integer[] {}, "Contains Block IDs that you want to NEVER exist in the world i.e. world anchors (just in case)");
+    
     // Plug-in options
+    public final BoolSetting reloadPlugins = new BoolSetting(this, "plugin-settings.allow-reload", false, "Allow plugins to be reloaded. WARNING - breaks with some mods. We *will not* support this!");
+
     public final BoolSetting remapPluginFile = new BoolSetting(this, "plugin-settings.default.remap-plugin-file", false, "Remap the plugin file (dev)");
 
     /* ======================================================================== */
@@ -103,12 +114,18 @@ public class CauldronConfig extends ConfigBase
         settings.put(flowingLavaDecay.path, flowingLavaDecay);
         settings.put(fakePlayerLogin.path, fakePlayerLogin);
         settings.put(remapPluginFile.path, remapPluginFile);
+        settings.put(reloadPlugins.path, reloadPlugins);
         settings.put(userLogin.path, userLogin);
         settings.put(allowTntPunishment.path, allowTntPunishment);
         settings.put(maxPlayersVisible.path, maxPlayersVisible);
         settings.put(chunkGCGracePeriod.path, chunkGCGracePeriod);
         settings.put(repeaterL.path, repeaterL);
         settings.put(redstoneTorchL.path, redstoneTorchL);
+        settings.put(protectSP.path, protectSP);
+        settings.put(realNames.path, realNames);
+        settings.put(affinity.path, affinity);
+        settings.put(ramChunks.path, ramChunks);
+        settings.put(instantRemove.path, instantRemove);
         load();
     }
 

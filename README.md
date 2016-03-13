@@ -1,6 +1,8 @@
 # Thermos 
 ![Thermos](thermos_icon.png)
+![Graph](http://i.mcstats.org/Thermos/Global+Statistics@2x.borderless.png)
 
+[![Build Status](https://travis-ci.org/TCPR/Thermos.svg?branch=master)](https://travis-ci.org/TCPR/Thermos)
 ![Minecraft Forge v10.13.4.1614][forge]
 ![Minecraft v1.7.10][mc]
 ![Java JDK v1.8][java]
@@ -18,7 +20,7 @@ Advantages over KCauldron:
 
 
 ## Installation
-Click [here](INSTALLATION.md)
+Click [here](https://tcpr.github.io/Thermos/install)
 
 ## Downloads
 You can download the pre-built packages from [here](https://github.com/TCPR/Thermos/releases). 
