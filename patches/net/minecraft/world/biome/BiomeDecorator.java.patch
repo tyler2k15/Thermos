@@ -24,7 +24,7 @@
      private static final String __OBFID = "CL_00000164";
  
      public BiomeDecorator()
-@@ -92,12 +102,26 @@
+@@ -92,12 +102,29 @@
  
      public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_)
      {
@@ -37,10 +37,13 @@
 +      int ct = 0;
 +      while(decorateLock.isLocked())
 +      {
-+          try { Thread.sleep(10L); } catch(Exception e) {} finally { ct++; }
-+          if(ct > 400 ) { throw new RuntimeException("Decoration took longer than 10 seconds!"); } // Thermos - Decoration took too long, we'll have to crash the server at this point so it doesn't hang.
++          try { Thread.sleep(100L); } catch(Exception e) {} finally { ct++; }
++          if(ct > 100 ) {
++              throw new RuntimeException("Generating a chunk in world " + this.currentWorld.getWorldInfo().getWorldName() +" took longer than 10 seconds, Thermos needs to crash so the server doesn't time out...sorry!");
++          } // Thermos - Decoration took too long, we'll have to crash the server at this point so it doesn't hang.
 +      }
 +      decorateLock.lock();
++      
 +      try {
 +            //throw new RuntimeException("Already decorating!!");
 +            // TODO Runtime with Timeout https://stackoverflow.com/questions/2275443/how-to-timeout-a-thread
@@ -57,7 +60,7 @@
              this.currentWorld = p_150512_1_;
              this.randomGenerator = p_150512_2_;
              this.chunk_X = p_150512_4_;
-@@ -105,7 +129,7 @@
+@@ -105,7 +132,7 @@
              this.genDecorations(p_150512_3_);
              this.currentWorld = null;
              this.randomGenerator = null;
@@ -66,7 +69,7 @@
      }
  
      protected void genDecorations(BiomeGenBase p_150513_1_)
-@@ -194,7 +218,7 @@
+@@ -194,7 +221,7 @@
          {
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -75,7 +78,7 @@
              WorldGenerator worldgenerator = p_150513_1_.getRandomWorldGenForGrass(this.randomGenerator);
              worldgenerator.generate(this.currentWorld, this.randomGenerator, k, i1, l);
          }
-@@ -204,7 +228,7 @@
+@@ -204,7 +231,7 @@
          {
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -84,7 +87,7 @@
              (new WorldGenDeadBush(Blocks.deadbush)).generate(this.currentWorld, this.randomGenerator, k, i1, l);
          }
  
-@@ -214,7 +238,7 @@
+@@ -214,7 +241,7 @@
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
  
@@ -93,7 +96,7 @@
              {
                  ;
              }
-@@ -229,7 +253,7 @@
+@@ -229,7 +256,7 @@
              {
                  k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
                  l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -102,7 +105,7 @@
                  this.mushroomBrownGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
              }
  
-@@ -237,7 +261,7 @@
+@@ -237,7 +264,7 @@
              {
                  k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
                  l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -111,7 +114,7 @@
                  this.mushroomRedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
              }
          }
-@@ -246,7 +270,7 @@
+@@ -246,7 +273,7 @@
          {
              j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -120,7 +123,7 @@
              this.mushroomBrownGen.generate(this.currentWorld, this.randomGenerator, j, l, k);
          }
  
-@@ -254,7 +278,7 @@
+@@ -254,7 +281,7 @@
          {
              j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -129,7 +132,7 @@
              this.mushroomRedGen.generate(this.currentWorld, this.randomGenerator, j, l, k);
          }
  
-@@ -263,7 +287,7 @@
+@@ -263,7 +290,7 @@
          {
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -138,7 +141,7 @@
              this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
          }
  
-@@ -271,7 +295,7 @@
+@@ -271,7 +298,7 @@
          {
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -147,7 +150,7 @@
              this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
          }
  
-@@ -280,7 +304,7 @@
+@@ -280,7 +307,7 @@
          {
              j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              k = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -156,7 +159,7 @@
              (new WorldGenPumpkin()).generate(this.currentWorld, this.randomGenerator, j, l, k);
          }
  
-@@ -289,7 +313,7 @@
+@@ -289,7 +316,7 @@
          {
              k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
              l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
@@ -165,7 +168,7 @@
              this.cactusGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
          }
  
-@@ -313,6 +337,7 @@
+@@ -313,6 +340,7 @@
              }
          }
  
@@ -173,7 +176,7 @@
          MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));
      }
  
-@@ -360,6 +385,31 @@
+@@ -360,6 +388,33 @@
          MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));
      }
  
@@ -196,7 +199,9 @@
 +
 +        while (iter.hasNext())
 +        {
-+            this.currentWorld.getWorld().unloadChunk(iter.next().bukkitChunk);
++            Chunk chunk = iter.next();
++            if (chunk.bukkitChunk != null)
++                this.currentWorld.getWorld().unloadChunk(chunk.bukkitChunk);
 +            iter.remove();
 +        }
 +    }

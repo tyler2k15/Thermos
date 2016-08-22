@@ -1,49 +1,38 @@
 package net.minecraftforge.cauldron.configuration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
-public class IntArraySetting extends Setting<Integer[]> {
-    private Integer[] value;
-    private ConfigBase config;
-    
-    public IntArraySetting(ConfigBase config, String path, Integer[] def, String description)
+public class IntArraySetting extends ArraySetting<Integer> 
+{
+    public IntArraySetting(ConfigBase config, String path, String def, String description)
     {
-        super(path, def, description);
-        this.value = def;
-        this.config = config;
+        super(path, def, description, config);
     }
 
-    @Override
-    public Integer[] getValue()
-    {
-        return value;
-    }
 
-    @Override
-    public void setValue(String value)
-    {
-    	String[] vals = value.split(",");
-    	ArrayList<Integer> minty = new ArrayList<Integer>(vals.length);
-        for(int i = 0; i < vals.length; i++)
-        {
-        	try
-        	{
-        		minty.add(Integer.parseInt(vals[i]));
-        	}
-        	catch(Exception e)
-        	{
-        		
-        	}
-        	catch(Error eeek)
-        	{
-        		
-        	}
-        }
-        this.value = new Integer[minty.size()];
-        for(int i = 0; i < this.value.length; i++)
-        {
-        	this.value[i] = minty.get(i);
-        }
-        config.set(path, this.value);
-    }
+	@Override
+	public void initArr(String array) {
+		String[] potential_values = array.split(",");
+		
+		this.value_array = new ArrayList<Integer>(potential_values.length);
+		this.value_set = new HashSet<Integer>(potential_values.length);
+		
+		for(String potval : potential_values)
+		{
+			try 
+			{
+				if(potval.length() == 0)
+					continue;
+				
+				this.value_array.add(Integer.parseInt(potval));
+			} 
+			catch ( Throwable t) 
+			{
+				System.out.println("[Thermos] Failed to add an option from config file");
+				t.printStackTrace();
+			}
+		}
+		this.value_set.addAll(this.value_array);
+	}
 }

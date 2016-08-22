@@ -20,9 +20,14 @@ import java.util.logging.Logger;
 
 import com.mojang.authlib.GameProfile;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.network.play.server.S33PacketUpdateSign;
 import net.minecraft.network.play.server.S38PacketPlayerListItem;
@@ -105,9 +110,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     public boolean isOnline() {
+        if (this.getHandle() instanceof net.minecraftforge.common.util.FakePlayer)
+	{
+	    return true;
+	}
         for (Object obj : server.getHandle().playerEntityList) {
             net.minecraft.entity.player.EntityPlayerMP player = (net.minecraft.entity.player.EntityPlayerMP) obj;
-            if (player.getCommandSenderName().equalsIgnoreCase(getName())) {
+            if (player != null && (this.getHandle() == player || player.getBukkitEntity() == this || this.getHandle().getGameProfile().getId().equals(player.getGameProfile().getId())))
+            {
                 return true;
             }
         }
@@ -455,7 +465,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     public boolean teleport(Location location, PlayerTeleportEvent.TeleportCause cause) {
         net.minecraft.entity.player.EntityPlayerMP entity = getHandle();
 
-        if (getHealth() == 0 || entity.isDead) {
+        if (getHealth() == 0 || entity.isDead || entity instanceof net.minecraftforge.common.util.FakePlayer) {
             return false;
         }
 
@@ -1330,7 +1340,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         {
             if ( getHealth() <= 0 && isOnline() )
             {
-                server.getServer().getConfigurationManager().respawnPlayer( getHandle(), 0, false );
+                server.getServer().getConfigurationManager().respawnPlayer( getHandle(), 0 );
             }
         }
 
@@ -1339,6 +1349,22 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         {
            return getHandle().translator;
         }
+
+        @Override
+        public void sendMessage(BaseComponent component) {
+            this.sendMessage(new BaseComponent[]{component});
+        }
+
+        @Override
+        public /* varargs */ void sendMessage(BaseComponent ... components) {
+            if (CraftPlayer.this.getHandle().playerNetServerHandler == null) {
+                return;
+            }
+            S02PacketChat packet = new S02PacketChat();
+            packet.components = components;
+            CraftPlayer.this.getHandle().playerNetServerHandler.sendPacket(packet);
+        }
+
     };
 
     public Player.Spigot spigot()

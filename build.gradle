@@ -13,6 +13,15 @@ buildscript {
             name 'forge'
             url 'http://files.minecraftforge.net/maven'
         }
+        maven {
+            name 'sonatype'
+            url 'http://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        maven {
+            name 'spigot'
+            url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+
         mavenCentral()
     }
     dependencies {
@@ -33,6 +42,10 @@ apply plugin: 'signing'
 repositories {
     clear()
     maven {
+        name 'sonatype'
+        url 'http://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven {
         name 'prok'
         url 'https://repo.prok.pw/'
     }
@@ -44,6 +57,11 @@ repositories {
         name 'minecraft'
         url 'https://libraries.minecraft.net/'
     }
+    maven {
+        name 'spigot'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+
     mavenCentral()
 }
 
@@ -56,7 +74,7 @@ minecraft {
     srgExtra "PK: org/bukkit/craftbukkit org/bukkit/craftbukkit/v1_7_R4"
 }
 
-group = 'ca.tcpr'
+group = 'cyberdynecc'
 
 ext.buildInfoCached = null;
 
@@ -115,7 +133,6 @@ configurations {
 
 dependencies {
     bootstrap 'pw.prok:KBootstrap:0.2.+'
-
     libraries 'net.minecraft:launchwrapper:1.12@jar'
     libraries 'org.ow2.asm:asm-all:5.0.3'
     libraries 'com.typesafe.akka:akka-actor_2.11:2.3.3'
@@ -146,6 +163,8 @@ dependencies {
     libraries 'org.apache.httpcomponents:httpclient:4.4.1'
     libraries 'net.openhft:affinity:3.0.1'
     libraries 'org.fusesource.jansi:jansi:1.11'
+	libraries 'com.koloboke:koloboke-impl-jdk8:1.0.0'
+	libraries 'java3d:vecmath:1.3.1'
 }
 
 packageUniversal {
@@ -175,7 +194,7 @@ def generateManifest(boolean legacy = false) {
             'Thermos-Channel'       : project.name,
             'Thermos-Version'       : project.version,
             'Thermos-Legacy'        : legacy,
-            'Implementation-Vendor' : 'TCPR',
+            'Implementation-Vendor' : 'CyberdyneCC',
             'Implementation-Title'  : project.name,
             'Implementation-Version': project.version,
             'Specification-Vendor'  : 'Bukkit Team',
